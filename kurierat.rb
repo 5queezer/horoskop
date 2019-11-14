@@ -11,12 +11,12 @@ def kurierat(zodiac)
 
       contents = doc.xpath('/html/body/app/leftlayout/main/horoscope/section/section[1]/div/horoscopehomecenter/div/div/div[3]/div/accordeon[1]/div[2]/div/ul/li').children
 
-      titles = contents.css('.zodiacDetail-accordeon-title').map { |title| title.text.strip }
-      paragraph = contents.css('.zodiacDetail-accordeon-paragraph').map { |paragraph| paragraph.text.strip }
+      titles = contents.css('.zodiacDetail-accordeon-title').map { |t| t.text.strip }
+      paragraphs = contents.css('.zodiacDetail-accordeon-paragraph').map { |t| t.text.strip }
 
       result[zodiac.to_sym] = {
         :date => DateTime.now.to_date,
-        :areas => Hash[titles.zip(paragraph)] 
+        :areas => Hash[titles.zip(paragraphs)] 
       }
     end
     result
