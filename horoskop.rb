@@ -11,12 +11,17 @@ require_relative 'date_german_additions'
 require_relative 'astrowoche'
 require_relative 'astroportal'
 require_relative 'kroneat'
+require_relative 'kurierat'
 
 opts = Optimist::options do
   opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
 end
 
 # zodiacs_en = %w{aries taurus gemini cancer leo virgo libra scorpio saggitarius capricorn aquarius pisces}
+
+
+contents = kurierat opts[:zodiac].split(',')
+puts contents.to_yaml
 
 contents = kroneat opts[:zodiac].split(',')
 puts contents.to_yaml
