@@ -7,8 +7,26 @@ require 'pp'
 require 'optimist'
 require 'yaml'
 require 'date'
-require 'google-translate'
 require_relative 'date_german_additions'
+
+class Horoscope
+  private :data
+
+  def initialize(zodiacs)
+    @@ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
+    @data = {}
+  end
+
+  def download
+    raise "download needs to be implemented"
+  end
+
+  def contents
+    self.download if data.empty?
+    @data
+  end
+end
+
 require_relative 'astrowoche'
 require_relative 'astroportal'
 require_relative 'kroneat'
@@ -19,7 +37,6 @@ opts = Optimist::options do
   opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
 end
 
-# zodiacs_en = %w{aries taurus gemini cancer leo virgo libra scorpio saggitarius capricorn aquarius pisces}
 
 threads = []
 threads << Thread.new {
