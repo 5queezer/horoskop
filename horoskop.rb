@@ -10,11 +10,14 @@ require 'date'
 require_relative 'date_german_additions'
 
 class Horoscope
-  private :data
+  attr_reader :z_map
+  attr_accessor :data
+  @@ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
 
   def initialize(zodiacs)
-    @@ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
     @data = {}
+    @selected_zodiacs = zodiacs & @@ZODIACS
+    raise ArgumentError.new("zodiacs '#{zodiacs.join(', ')}' not found") if @selected_zodiacs.empty?
   end
 
   def download
@@ -22,8 +25,12 @@ class Horoscope
   end
 
   def contents
-    self.download if data.empty?
+    download if data.empty?
     @data
+  end
+
+  def mapped_zodiac(zodiac)
+    @z_map[zodiac]
   end
 end
 
@@ -37,33 +44,37 @@ opts = Optimist::options do
   opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
 end
 
+zodiacs = opts[:zodiac].split(',')
 
-threads = []
-threads << Thread.new {
-  contents = kurierat opts[:zodiac].split(',')
-  puts contents.to_yaml
-}
+k = KurierAt.new(zodiacs)
+puts k.contents
 
-threads << Thread.new {
-  contents = kroneat opts[:zodiac].split(',')
-  puts contents.to_yaml
-}
+# threads = []
+# threads << Thread.new {
+#   contents = kurierat opts[:zodiac].split(',')
+#   puts contents.to_yaml
+# }
 
-threads << Thread.new {
-  contents = astroportal opts[:zodiac].split(',')
-  puts contents.to_yaml
-}
+# threads << Thread.new {
+#   contents = kroneat opts[:zodiac].split(',')
+#   puts contents.to_yaml
+# }
 
-threads << Thread.new {
-  contents = astrowoche opts[:zodiac].split(',')
-  puts contents.to_yaml
-}
+# threads << Thread.new {
+#   contents = astroportal opts[:zodiac].split(',')
+#   puts contents.to_yaml
+# }
 
-threads << Thread.new {
-  contents = horoscopecom opts[:zodiac].split(',')
-  puts contents.to_yaml
-}
+# threads << Thread.new {
+#   contents = astrowoche opts[:zodiac].split(',')
+#   puts contents.to_yaml
+# }
 
-threads.each(&:join) 
+# threads << Thread.new {
+#   contents = horoscopecom opts[:zodiac].split(',')
+#   puts contents.to_yaml
+# }
+
+# threads.each(&:join) 
 
 
