@@ -6,4 +6,7 @@ Scrapes the content from these Web Services:
 - Astroportal
 - Astrowoche.de
   
-  
+Usage:
+```
+./horoskop.rb --zodiac jungfrau
+```
