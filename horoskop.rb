@@ -19,19 +19,26 @@ end
 
 # zodiacs_en = %w{aries taurus gemini cancer leo virgo libra scorpio saggitarius capricorn aquarius pisces}
 
+threads = []
+threads << Thread.new {
+  contents = kurierat opts[:zodiac].split(',')
+  puts contents.to_yaml
+}
 
-contents = kurierat opts[:zodiac].split(',')
-puts contents.to_yaml
+threads << Thread.new {
+  contents = kroneat opts[:zodiac].split(',')
+  puts contents.to_yaml
+}
 
-contents = kroneat opts[:zodiac].split(',')
-puts contents.to_yaml
+threads << Thread.new {
+  contents = astroportal opts[:zodiac].split(',')
+  puts contents.to_yaml
+}
 
-contents = astroportal opts[:zodiac].split(',')
-puts contents.to_yaml
-
-contents = astrowoche opts[:zodiac].split(',')
-puts contents.to_yaml
+threads << Thread.new {
+  contents = astrowoche opts[:zodiac].split(',')
+  puts contents.to_yaml
+}
  
-# astrowoche.each do |zodiac|
-#    pp zodiac
-# end
+threads.each(&:join) 
+
