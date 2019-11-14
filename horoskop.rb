@@ -49,4 +49,4 @@ threads << Thread.new {
 
 threads.each(&:join) 
 
-
+pp GoogleTranslate.translate('en', 'de', 'I am smart')
