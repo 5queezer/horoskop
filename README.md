@@ -1,0 +1,2 @@
+# horoskop
+Horoscope web scraper
