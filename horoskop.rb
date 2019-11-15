@@ -40,11 +40,11 @@ require_relative 'kroneat'
 require_relative 'kurierat'
 require_relative 'horoscopecom'
 providers = {
-  "kurier" => KurierAt,
-  "krone" => KroneAt,
-  "horoscopecom" => HoroscopeCom,
-  "astroportal" => Astroportal,
-  "astrowoche" => Astrowoche
+  :kurier => KurierAt,
+  :krone => KroneAt,
+  :horoscopecom => HoroscopeCom,
+  :astroportal => Astroportal,
+  :astrowoche => Astrowoche
 }
 
 opts = Optimist::options do
@@ -55,7 +55,7 @@ zodiacs = opts[:zodiac].split(',')
 
 threads = []
 
-providers.each do |label, klass|
+providers.each do |_label, klass|
   threads << Thread.new {
     horoscope = klass.new(zodiacs)
     puts horoscope.contents.to_yaml
