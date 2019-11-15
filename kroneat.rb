@@ -8,6 +8,7 @@ class KroneAt < Horoscope
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://www.krone.at/horoskop-#{zodiac_id}"
       doc = Nokogiri::HTML(open(url))
+      lang = doc.at('html')['lang']
       date_string = doc.css('.daily-horoscope-content__date').text.gsub(/[^\d.]*/, '')
       date = Date.strptime(date_string, '%d.%m.%Y')
       contents = doc.css('.daily-horoscope-content__text').children
@@ -20,6 +21,7 @@ class KroneAt < Horoscope
 
       @data[zodiac_en.to_sym] = {
         :url => url,
+        :lang => lang,
         :date => date,
         :body => body 
       }

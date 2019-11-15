@@ -39,12 +39,14 @@ require_relative 'astroportal'
 require_relative 'kroneat'
 require_relative 'kurierat'
 require_relative 'horoscopecom'
+require_relative 'rogers'
 providers = {
   :kurier => KurierAt,
   :krone => KroneAt,
   :horoscopecom => HoroscopeCom,
   :astroportal => Astroportal,
-  :astrowoche => Astrowoche
+  :astrowoche => Astrowoche,
+  :rogers => Rogers
 }
 
 opts = Optimist::options do
@@ -54,12 +56,25 @@ end
 zodiacs = opts[:zodiac].split(',')
 
 threads = []
+results = {}
 
-providers.each do |_label, klass|
+providers.each do |provider, klass|
   threads << Thread.new {
     horoscope = klass.new(zodiacs)
-    puts horoscope.contents.to_yaml
+    results[provider] = horoscope.contents
   }
 end
 
 threads.each(&:join)
+
+output = {}
+zodiacs.each do |zodiac|
+  output[zodiac] = {}
+  results.each do |res|
+    provider, data = *res
+    contents = data[zodiac.to_sym]
+    output[zodiac][provider] = contents.slice(:date, :title, :body)
+  end
+end
+
+puts output.to_yaml
