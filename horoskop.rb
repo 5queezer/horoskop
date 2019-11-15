@@ -11,7 +11,7 @@ require_relative 'date_german_additions'
 
 class Horoscope
   attr_reader :z_map
-  attr_accessor :data
+  attr_accessor :data, :selected_zodiacs
   @@ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
 
   def initialize(zodiacs)
@@ -29,8 +29,8 @@ class Horoscope
     @data
   end
 
-  def mapped_zodiac(zodiac)
-    @z_map[zodiac]
+  def zodiacs
+    @selected_zodiacs.map{ |z| @z_map[z] }.zip(@selected_zodiacs)
   end
 end
 
@@ -46,35 +46,21 @@ end
 
 zodiacs = opts[:zodiac].split(',')
 
-k = KurierAt.new(zodiacs)
-puts k.contents
+providers = {
+  "kurier" => KurierAt,
+  "krone" => KroneAt,
+  "horoscopecom" => HoroscopeCom,
+  "astroportal" => Astroportal,
+  "astrowoche" => Astrowoche
+}
 
-# threads = []
-# threads << Thread.new {
-#   contents = kurierat opts[:zodiac].split(',')
-#   puts contents.to_yaml
-# }
+threads = []
 
-# threads << Thread.new {
-#   contents = kroneat opts[:zodiac].split(',')
-#   puts contents.to_yaml
-# }
+providers.each do |label, klass|
+  threads << Thread.new {
+    horoscope = klass.new(zodiacs)
+    puts horoscope.contents.to_yaml
+  }
+end
 
-# threads << Thread.new {
-#   contents = astroportal opts[:zodiac].split(',')
-#   puts contents.to_yaml
-# }
-
-# threads << Thread.new {
-#   contents = astrowoche opts[:zodiac].split(',')
-#   puts contents.to_yaml
-# }
-
-# threads << Thread.new {
-#   contents = horoscopecom opts[:zodiac].split(',')
-#   puts contents.to_yaml
-# }
-
-# threads.each(&:join) 
-
-
+threads.each(&:join)
