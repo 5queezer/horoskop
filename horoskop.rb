@@ -16,7 +16,7 @@ class Horoscope
 
   def initialize(zodiacs)
     @data = {}
-    @selected_zodiacs = zodiacs & @@ZODIACS
+    @selected_zodiacs = zodiacs.join == "all" ? @@ZODIACS : zodiacs & @@ZODIACS
     raise ArgumentError.new("zodiacs '#{zodiacs.join(', ')}' not found") if @selected_zodiacs.empty?
   end
 
@@ -39,13 +39,6 @@ require_relative 'astroportal'
 require_relative 'kroneat'
 require_relative 'kurierat'
 require_relative 'horoscopecom'
-
-opts = Optimist::options do
-  opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
-end
-
-zodiacs = opts[:zodiac].split(',')
-
 providers = {
   "kurier" => KurierAt,
   "krone" => KroneAt,
@@ -53,6 +46,12 @@ providers = {
   "astroportal" => Astroportal,
   "astrowoche" => Astrowoche
 }
+
+opts = Optimist::options do
+  opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
+end
+
+zodiacs = opts[:zodiac].split(',')
 
 threads = []
 
