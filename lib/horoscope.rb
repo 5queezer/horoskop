@@ -6,7 +6,6 @@ class Horoscope
   def initialize(zodiacs)
     @data = {}
     @selected_zodiacs = zodiacs.join == "all" ? ZODIACS : zodiacs & ZODIACS
-    raise ArgumentError.new("zodiacs '#{zodiacs.join(', ')}' not found") if @selected_zodiacs.empty?
   end
 
   def download
