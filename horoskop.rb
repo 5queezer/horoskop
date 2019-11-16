@@ -17,30 +17,32 @@ require_relative 'lib/kurierat'
 require_relative 'lib/horoscopecom'
 require_relative 'lib/rogers'
 
-opts = Optimist::options do
-  opt :zodiac, "Comma separated list of zodiacs, possible values: #{ Horoscope::ZODIACS.join(',') }", :type => :string, :default => "all"
+available_horoscopes = ObjectSpace.each_object(Class).select do |c| 
+  c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope"
 end
 
-if opts[:zodiac] == "all"
-  zodiacs = Horoscope::ZODIACS
-else
-  zodiac_array = opts[:zodiac].split(',')
-  zodiacs = zodiac_array & Horoscope::ZODIACS
-  raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array.length
+available_horoscope_array = available_horoscopes.map{ |h| h.inspect.delete_suffix('Horoscope').downcase }
+
+opts = Optimist::options do
+  opt :zodiac, "Zodiacs, comma separated", :default => Horoscope::ZODIACS.join(',')
+  opt :provider, "Provider, comma separated", :default => available_horoscope_array.join(',')
 end
+
+zodiac_array = opts[:zodiac].split(',')
+zodiacs = zodiac_array & Horoscope::ZODIACS
+raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array.length
 
 threads = []
 results = {}
 
-horoscopes = ObjectSpace.each_object(Class).select do |c| 
-  c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope"
-end
+provider_array = opts[:provider].split(',')
+available_horoscopes.each do |klass|
+  provider = klass.inspect.delete_suffix('Horoscope')
+  next unless provider_array.include? provider.downcase 
 
-horoscopes.each do |klass|
-  provider = klass.inspect.delete_suffix('Horoscope').to_sym
   threads << Thread.new do
     horoscope = klass.new(zodiacs)
-    results[provider] = horoscope.contents
+    results[provider.to_sym] = horoscope.contents
   end
 end
 
