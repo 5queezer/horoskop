@@ -16,6 +16,7 @@ require_relative 'lib/kroneat'
 require_relative 'lib/kurierat'
 require_relative 'lib/horoscopecom'
 require_relative 'lib/rogers'
+require_relative 'lib/sat1'
 
 available_horoscopes = ObjectSpace.each_object(Class).select do |c| 
   c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope"
