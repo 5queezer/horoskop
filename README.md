@@ -1,7 +1,8 @@
-# horoskop
+# Horoskop
 Horoscope web scraper
 
-Scrapes the content from these Web Services:
+Scrape the content of these web services and output the result as YAML
+
 - Krone.at
 - Astroportal
 - Astrowoche.de
@@ -11,6 +12,8 @@ Scrapes the content from these Web Services:
 
 ## Install
 ```
+git clone git@github.com:5queezer/horoskop.git
+cd horoskop
 bundle install
 ```
 
