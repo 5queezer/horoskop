@@ -23,7 +23,7 @@ end
 
 zodiac_array = opts[:zodiac].split(',')
 zodiacs = zodiac_array & Horoscope::ZODIACS
-raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array
+raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array.length
 
 threads = []
 results = {}
