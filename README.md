@@ -8,13 +8,18 @@ Scrapes the content from these Web Services:
 - Horoscope.com
 - Kurier.at
 - Rogers.at
-  
-Usage:
+
+## Install
 ```
-./horoskop.rb --zodiac leo,cancer
+bundle install
+```
+
+## Usage:
+```
+ruby horoskop.rb --zodiac leo,cancer
 ```
 
 Show help
 ```
-./horoskop.rb --help
+ruby horoskop.rb --help
 ```
