@@ -27,6 +27,8 @@ class Horoscope
   def contents
     download if data.empty?
     @data
+  rescue SocketError => e
+    $stderr.puts self.class.name << ": " << e.message
   end
 
   def zodiacs
