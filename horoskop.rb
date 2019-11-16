@@ -42,21 +42,28 @@ available_horoscopes.each do |klass|
 
   threads << Thread.new do
     horoscope = klass.new(zodiacs)
-    results[provider.to_sym] = horoscope.contents
+    results[provider] = horoscope.contents
   end
 end
 
 threads.each(&:join)
 
+# reformat results for a nice output
+
+reduce = lambda { |arr| arr.length == 1 ? reduce.call(arr.first[1]) : arr }
+
 output = {}
 zodiacs.each do |zodiac|
-  output[zodiac] = {}
+  z = zodiac.to_sym
+  output[z] = {}
   results.each do |res|
     provider, data = *res
-    contents = data[zodiac.to_sym]
-    output[zodiac][provider] = contents.slice(:date, :title, :body)
+    contents = data[z]
+    output[z][provider] = contents.slice(:date, :title, :body)
   end
+  output[z] = reduce[output[z]]
 end
 
-puts (zodiacs.length == 1 ? output.first[1] : output).to_yaml
+
+puts reduce[output].to_yaml
 
