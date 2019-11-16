@@ -52,8 +52,12 @@ zodiacs = opts[:zodiac].split(',')
 threads = []
 results = {}
 
-ObjectSpace.each_object(Class).select{ |c| c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope" }.each do |klass|
-  provider = klass.inspect.to_sym
+horoscopes = ObjectSpace.each_object(Class).select do |c| 
+  c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope"
+end
+
+horoscopes.each do |klass|
+  provider = klass.inspect.delete_suffix('Horoscope').to_sym
   threads << Thread.new do
     horoscope = klass.new(zodiacs)
     results[provider] = horoscope.contents
