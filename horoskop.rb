@@ -29,9 +29,9 @@ opts = Optimist::options do
   opt :provider, "Provider, comma separated", :default => available_horoscope_array.join(',')
 end
 
-zodiac_array = opts[:zodiac].split(',')
-zodiacs = zodiac_array & Horoscope::ZODIACS
-raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array.length
+zodiacs_selected = opts[:zodiac].split(',')
+zodiacs = zodiacs_selected & Horoscope::ZODIACS
+raise "zodiac(s) not found: #{ (zodiacs_selected - zodiacs).join(',') }" if zodiacs.length != zodiacs_selected.length
 
 threads = []
 results = {}
