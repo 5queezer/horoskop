@@ -35,7 +35,7 @@ raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.
 threads = []
 results = {}
 
-provider_array = opts[:provider].split(',')
+provider_array = opts[:provider].downcase.split(',')
 available_horoscopes.each do |klass|
   provider = klass.inspect.delete_suffix('Horoscope')
   next unless provider_array.include? provider.downcase 
