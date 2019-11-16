@@ -18,7 +18,7 @@ require_relative 'lib/horoscopecom'
 require_relative 'lib/rogers'
 
 opts = Optimist::options do
-  opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
+  opt :zodiac, "Comma separated list of zodiacs, possible values: #{ Horoscope::ZODIACS.join(',') }", :type => :string, :default => "all"
 end
 
 zodiac_array = opts[:zodiac].split(',')
