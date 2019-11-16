@@ -21,7 +21,9 @@ opts = Optimist::options do
   opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
 end
 
-zodiacs = opts[:zodiac].split(',')
+zodiac_array = opts[:zodiac].split(',')
+zodiacs = zodiac_array & Horoscope::ZODIACS
+raise "zodiac(s) not found: #{ (zodiac_array - zodiacs).join(',') }" if zodiacs.length != zodiac_array
 
 threads = []
 results = {}

@@ -1,6 +1,6 @@
 class HoroscopeComHoroscope < Horoscope
   def initialize(zodiacs)
-    @z_map = Hash[@@ZODIACS.zip(1..12)]
+    @z_map = Hash[ZODIACS.zip(1..12)]
     super(zodiacs)
   end
 

@@ -1,11 +1,11 @@
 class Horoscope
   attr_reader :z_map
   attr_accessor :data, :selected_zodiacs
-  @@ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
+  ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
 
   def initialize(zodiacs)
     @data = {}
-    @selected_zodiacs = zodiacs.join == "all" ? @@ZODIACS : zodiacs & @@ZODIACS
+    @selected_zodiacs = zodiacs.join == "all" ? ZODIACS : zodiacs & ZODIACS
     raise ArgumentError.new("zodiacs '#{zodiacs.join(', ')}' not found") if @selected_zodiacs.empty?
   end
 
