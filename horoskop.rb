@@ -8,6 +8,7 @@ require 'optimist'
 require 'yaml'
 require 'date'
 require_relative 'lib/date_german_additions'
+require "google/cloud/translate"
 
 require_relative 'lib/horoscope'
 require_relative 'lib/astrowoche'
@@ -43,11 +44,16 @@ end
 threads.each(&:join)
 
 output = {}
+translate = Google::Cloud::Translate.new
+translate_direction = ["en", "de"]
 zodiacs.each do |zodiac|
   output[zodiac] = {}
   results.each do |res|
     provider, data = *res
     contents = data[zodiac.to_sym]
+    if contents[:lang].start_with? translate_direction[0]
+      # TODO translate contents
+    end
     output[zodiac][provider] = contents.slice(:date, :title, :body)
   end
 end
