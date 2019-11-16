@@ -42,14 +42,6 @@ require_relative 'kroneat'
 require_relative 'kurierat'
 require_relative 'horoscopecom'
 require_relative 'rogers'
-providers = {
-  :kurier => KurierAt,
-  :krone => KroneAt,
-  :horoscopecom => HoroscopeCom,
-  :astroportal => Astroportal,
-  :astrowoche => Astrowoche,
-  :rogers => Rogers
-}
 
 opts = Optimist::options do
   opt :zodiac, "Choose zodiac", :type => :string, :default => "all"       
@@ -60,11 +52,12 @@ zodiacs = opts[:zodiac].split(',')
 threads = []
 results = {}
 
-providers.each do |provider, klass|
-  threads << Thread.new {
+ObjectSpace.each_object(Class).select{ |c| c.inspect.end_with? "Horoscope" and c.inspect != "Horoscope" }.each do |klass|
+  provider = klass.inspect.to_sym
+  threads << Thread.new do
     horoscope = klass.new(zodiacs)
     results[provider] = horoscope.contents
-  }
+  end
 end
 
 threads.each(&:join)
@@ -80,3 +73,4 @@ zodiacs.each do |zodiac|
 end
 
 puts (zodiacs.length == 1 ? output.first[1] : output).to_yaml
+

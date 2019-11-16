@@ -1,4 +1,4 @@
-class HoroscopeCom < Horoscope
+class HoroscopeComHoroscope < Horoscope
   def initialize(zodiacs)
     @z_map = Hash[@@ZODIACS.zip(1..12)]
     super(zodiacs)
@@ -10,7 +10,7 @@ class HoroscopeCom < Horoscope
       doc = Nokogiri::HTML(open(url))
       lang = doc.at('html')['lang']
       contents = doc.css('.main-horoscope > p:nth-child(2)').children
-      date_string = contents.css('strong').text.strip
+      date_string = contents.at_css('strong').text.strip
 
       body = contents.text.strip.gsub("#{date_string} - ", '')
 

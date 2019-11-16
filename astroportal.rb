@@ -1,4 +1,4 @@
-class Astroportal < Horoscope
+class AstroportalHoroscope < Horoscope
   def initialize(zodiacs)
     @z_map = Hash[@@ZODIACS.zip(%w{widder stier zwillinge krebs loewe jungfrau waage skorpion schuetze steinbock wassermann fische})]
     super(zodiacs)
