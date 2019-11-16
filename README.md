@@ -16,7 +16,7 @@ bundle install
 
 ## Usage:
 ```
-ruby horoskop.rb --zodiac leo,cancer
+ruby horoskop.rb --zodiac leo,cancer --provider krone
 ```
 
 Show help
