@@ -4,7 +4,7 @@ Horoscope web scraper
 Scrape the content of these web services and output the result as YAML
 
 - Krone.at
-- Astroportal
+- Astroportal.de
 - Astrowoche.de
 - Horoscope.com
 - Kurier.at
@@ -12,8 +12,6 @@ Scrape the content of these web services and output the result as YAML
 
 ## Install
 ```
-git clone git@github.com:5queezer/horoskop.git
-cd horoskop
 bundle install
 ```
 
