@@ -77,4 +77,4 @@ zodiacs.each do |zodiac|
   end
 end
 
-puts output.to_yaml
+puts (zodiacs.length == 1 ? output.first[1] : output).to_yaml
