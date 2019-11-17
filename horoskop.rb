@@ -27,6 +27,7 @@ available_horoscope_array = available_horoscopes.map{ |h| h.inspect.delete_suffi
 opts = Optimist::options do
   opt :zodiac, "Zodiacs, comma separated", :default => Horoscope::ZODIACS.join(',')
   opt :provider, "Provider, comma separated", :default => available_horoscope_array.join(',')
+  opt :raw, "Output raw and unformatted results", :default => false
 end
 
 zodiacs_selected = opts[:zodiac].split(',')
@@ -49,22 +50,27 @@ end
 
 threads.each(&:join)
 
-# reformat results for a nice output
+unless opts[:raw]
 
-reduce = lambda { |arr| arr.length == 1 ? reduce.call(arr.first[1]) : arr }
+  # reformat results for a nice output
 
-output = {}
-zodiacs.each do |zodiac|
-  z = zodiac.to_sym
-  output[z] = {}
-  results.each do |res|
-    provider, data = *res
-    contents = data[z]
-    output[z][provider] = contents.slice(:date, :title, :body)
+  reduce = lambda { |arr| arr.length == 1 ? reduce.call(arr.first[1]) : arr }
+
+  output = {}
+  zodiacs.each do |zodiac|
+    z = zodiac.to_sym
+    output[z] = {}
+    results.each do |res|
+      provider, data = *res
+      contents = data[z]
+      output[z][provider] = contents.slice(:date, :title, :body)
+    end
+    output[z] = reduce[output[z]]
   end
-  output[z] = reduce[output[z]]
+
+
+  puts reduce[output].to_yaml
+else
+  puts results.to_yaml
 end
-
-
-puts reduce[output].to_yaml
 
