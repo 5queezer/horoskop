@@ -38,12 +38,12 @@ threads = []
 results = {}
 
 provider_array = opts[:provider].downcase.split(',')
-available_horoscopes.each do |klass|
-  provider = klass.inspect.delete_suffix('Horoscope')
+available_horoscopes.each do |provider_class|
+  provider = provider_class.inspect.delete_suffix('Horoscope')
   next unless provider_array.include? provider.downcase 
 
   threads << Thread.new do
-    horoscope = klass.new(zodiacs)
+    horoscope = provider_class.new(zodiacs)
     results[provider] = horoscope.contents
   end
 end

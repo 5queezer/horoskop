@@ -7,7 +7,8 @@ class AstrowocheHoroscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://astrowoche.wunderweib.de/tageshoroskop/heute/#{zodiac_id}"
-      doc = Nokogiri::HTML(open(url))
+      doc = Nokogiri::HTML(open_url(url))
+
       lang = doc.at('html')['lang']
       content = doc.css('section.box--bg-color:nth-child(1) > article:nth-child(1)')
       titles = content.css('.typo--editor > h3').map { |t| t.text.strip }

@@ -1,7 +1,11 @@
+require 'work_queue'
+
 class Horoscope
   attr_reader :z_map
   attr_accessor :data, :selected_zodiacs
   ZODIACS = %w{aries taurus gemini cancer leo virgio libra scorpio sagittarius capricorn aquarius pisces}
+  @@connections = 0
+  @@terminations = 0
 
   def initialize(zodiacs)
     @data = {}
@@ -21,5 +25,10 @@ class Horoscope
 
   def zodiacs
     @selected_zodiacs.map{ |z| @z_map[z] }.zip(@selected_zodiacs)
+  end
+
+  def open_url(*args)
+    @@connections += 1
+    contents = open(*args)
   end
 end

@@ -7,7 +7,8 @@ class KurierHoroscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://kurier.at/horoskop/#{zodiac_id}/tag"
-      doc = Nokogiri::HTML(open(url))
+      doc = Nokogiri::HTML(open_url(url))
+
       lang = doc.at('html')['lang']
       contents = doc.xpath('/html/body/app/leftlayout/main/horoscope/section/section[1]/div/horoscopehomecenter/div/div/div[3]/div/accordeon[1]/div[2]/div/ul/li').children
       titles = contents.css('.zodiacDetail-accordeon-title').map { |t| t.text.strip }

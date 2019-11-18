@@ -7,7 +7,9 @@ class KroneHoroscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://www.krone.at/horoskop-#{zodiac_id}"
-      doc = Nokogiri::HTML(open(url))
+
+      doc = Nokogiri::HTML(open_url(url))
+
       lang = doc.at('html')['lang']
       date_string = doc.css('.daily-horoscope-content__date').text.gsub(/[^\d.]*/, '')
       date = Date.strptime(date_string, '%d.%m.%Y')

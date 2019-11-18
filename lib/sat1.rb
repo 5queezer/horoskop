@@ -7,7 +7,8 @@ class Sat1Horoscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://www.sat1.de/ratgeber/horoskop/tageshoroskop/#{zodiac_id}"
-      doc = Nokogiri::HTML(open(url))
+      doc = Nokogiri::HTML(open_url(url))
+
       lang = doc.at('html')['lang']
       content = doc.at_css('.formatted-text')
       encode = lambda { |text| text.encode("iso-8859-1").force_encoding("utf-8") }

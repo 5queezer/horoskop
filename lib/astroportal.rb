@@ -7,7 +7,8 @@ class AstroportalHoroscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://www.astroportal.com/tageshoroskope/#{zodiac_id}"
-      doc = Nokogiri::HTML(open(url, :allow_redirections => :all))
+      doc = Nokogiri::HTML(open_url(url, :allow_redirections => :all))
+
       lang = doc.at('html')['lang']
       date_string = doc.css('#c23 > div:nth-child(1) > h2:nth-child(6)').text.strip.gsub(/^.*, /, '')
       date = Date.parse_german_string(date_string)

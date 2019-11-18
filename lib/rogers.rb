@@ -7,7 +7,8 @@ class RogersHoroscope < Horoscope
   def download
     zodiacs.each do |zodiac_id, zodiac_en|
       url = "https://www.rogers.at/horoskop-online/#{zodiac_id}/"
-      doc = Nokogiri::HTML(open(url))
+      doc = Nokogiri::HTML(open_url(url))
+
       lang = doc.at('html')['lang']
       contents = doc.at('div.av-layout-tab:nth-child(3) > div:nth-child(1) > div:nth-child(1) > section:nth-child(1) > div:nth-child(1)')
       date_string = doc.css('span.today').text.strip
