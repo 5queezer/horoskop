@@ -1,14 +1,18 @@
 GEM
+  specs:
+
+GEM
   remote: https://rubygems.org/
   specs:
     date (2.0.0)
-    mini_portile2 (2.4.0)
-    nokogiri (1.10.5)
-      mini_portile2 (~> 2.4.0)
+    mini_portile2 (2.8.0)
+    nokogiri (1.13.5)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     open_uri_redirections (0.2.1)
     optimist (3.0.0)
     pp (0.1.1)
-    ruby-progressbar (1.10.1)
+    racc (1.6.0)
 
 PLATFORMS
   ruby
@@ -19,7 +23,6 @@ DEPENDENCIES
   open_uri_redirections!
   optimist!
   pp!
-  ruby-progressbar!
 
 BUNDLED WITH
    2.0.2
